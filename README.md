@@ -1,6 +1,6 @@
 # download-git-repo
 
-Download and extract a git repository (GitHub, GitLab, Bitbucket) from node.
+Download or Clone (ssh or https) and extract a git repository (GitHub, GitLab, Bitbucket) from node.
 
 ## Installation
 
@@ -38,14 +38,14 @@ The callback function as `function (err)`.
 ## Examples
 Using http download from Github repository at master.
 ```javascript
-download('flipxfx/download-git-repo-fixture', 'test/tmp', function (err) {
+download('egermano/download-git-repo-fixture', 'test/tmp', function (err) {
   console.log(err ? "Error" : "Success")
 })
 ```
 
 Using git clone from Bitbucket repository at my-branch.
 ```javascript
-download('flipxfx/download-git-repo-fixture#my-branch', 'test/tmp', function (err) {
+download('bitbucket:egermano/download-git-repo-fixture#ssh-option', 'test/tmp', {clone: true, ssh: true}, function (err) {
   console.log(err ? "Error" : "Success")
 })
 ```
@@ -57,4 +57,3 @@ To [ianstormtaylor/download-github-repo](https://github.com/ianstormtaylor/downl
 ## License
 
 MIT
-
