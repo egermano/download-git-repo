@@ -2,10 +2,6 @@
 
 Download or Clone (ssh or https) and extract a git repository (GitHub, GitLab, Bitbucket) from node.
 
-## Installation
-
-    $ npm install download-git-repo
-
 ## API
 
 ### download(repository, destination, options, callback)
