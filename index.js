@@ -24,9 +24,10 @@ function download (repo, dest, opts, fn) {
   }
   opts = opts || {}
   var clone = opts.clone || false
+  var ssh = opts.ssh || false
 
   repo = normalize(repo)
-  var url = getUrl(repo, clone)
+  var url = getUrl(repo, clone, ssh)
 
   if (clone) {
     gitclone(url, dest, { checkout: repo.checkout }, function (err) {
@@ -103,15 +104,15 @@ function addProtocol (url) {
  * @return {String}
  */
 
-function getUrl (repo, clone) {
+function getUrl (repo, clone, ssh) {
   var url
 
   if (repo.type === "github")
-    url = github(repo, clone)
+    url = github(repo, clone, ssh)
   else if (repo.type === "gitlab")
-    url = gitlab(repo, clone)
+    url = gitlab(repo, clone, ssh)
   else if (repo.type === "bitbucket")
-    url = bitbucket(repo, clone)
+    url = bitbucket(repo, clone, ssh)
   else
     url = github(repo, clone)
 
@@ -125,7 +126,7 @@ function getUrl (repo, clone) {
  * @return {String}
  */
 
-function github (repo, clone) {
+function github (repo, clone, ssh) {
   var url
 
   if (clone)
@@ -143,7 +144,7 @@ function github (repo, clone) {
  * @return {String}
  */
 
-function gitlab (repo, clone) {
+function gitlab (repo, clone, ssh) {
   var url
 
   if (clone)
@@ -161,11 +162,15 @@ function gitlab (repo, clone) {
  * @return {String}
  */
 
-function bitbucket (repo, clone) {
+function bitbucket (repo, clone, ssh) {
   var url
 
   if (clone)
-    url = "git@" + repo.origin + ":" + repo.owner + "/" + repo.name + ".git"
+    if (ssh)
+      url = "git@" + repo.origin + ":" + repo.owner + "/" + repo.name + ".git"
+    else
+      url = addProtocol(repo.origin) + "/" + repo.owner + "/" + repo.name + ".git"
+
   else
     url = addProtocol(repo.origin) + "/" + repo.owner + "/" + repo.name + "/get/" + repo.checkout + ".zip"
 
