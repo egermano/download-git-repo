@@ -130,7 +130,10 @@ function github (repo, clone, ssh) {
   var url
 
   if (clone)
-    url = "git@" + repo.origin + ":" + repo.owner + "/" + repo.name + ".git"
+    if (ssh)
+      url = "git@" + repo.origin + ":" + repo.owner + "/" + repo.name + ".git"
+    else
+      url = addProtocol(repo.origin) + "/" + repo.owner + "/" + repo.name + ".git"
   else
     url = addProtocol(repo.origin) + "/" + repo.owner + "/" + repo.name + "/archive/" + repo.checkout + ".zip"
 
