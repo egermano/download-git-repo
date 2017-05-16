@@ -90,9 +90,19 @@ function normalize (repo) {
  * @return {String}
  */
 
-function addProtocol (url) {
-  if (!/^(f|ht)tps?:\/\//i.test(url))
-    url = "https://" + url
+function addProtocol (url, ssh) {
+  if (!/^(f|ht)tps?:\/\//i.test(url)){
+    if (ssh)
+      url = "git@" + url
+    else
+      url = "https://" + url
+  }
+  
+  // Add trailing slash or colon (for ssh)
+  if (/^git\@/i.test(url))
+    url = url + ":"
+  else
+    url = url + "/"
 
   return url
 }
@@ -130,12 +140,9 @@ function github (repo, clone, ssh) {
   var url
 
   if (clone)
-    if (ssh)
-      url = "git@" + repo.origin + ":" + repo.owner + "/" + repo.name + ".git"
-    else
-      url = addProtocol(repo.origin) + "/" + repo.owner + "/" + repo.name + ".git"
+    url = addProtocol(repo.origin, ssh) + repo.owner + "/" + repo.name + ".git"
   else
-    url = addProtocol(repo.origin) + "/" + repo.owner + "/" + repo.name + "/archive/" + repo.checkout + ".zip"
+    url = addProtocol(repo.origin) + repo.owner + "/" + repo.name + "/archive/" + repo.checkout + ".zip"
 
   return url
 }
@@ -151,10 +158,10 @@ function gitlab (repo, clone, ssh) {
   var url
 
   if (clone)
-    url = "git@" + repo.origin + ":" + repo.owner + "/" + repo.name + ".git"
+    url = addProtocol(repo.origin, ssh) + repo.owner + "/" + repo.name + ".git"
   else
-    url = addProtocol(repo.origin) + "/" + repo.owner + "/" + repo.name + "/repository/archive.zip?ref=" + repo.checkout
-
+    url = addProtocol(repo.origin) + repo.owner + "/" + repo.name + "/repository/archive.zip?ref=" + repo.checkout
+  
   return url
 }
 
@@ -169,13 +176,9 @@ function bitbucket (repo, clone, ssh) {
   var url
 
   if (clone)
-    if (ssh)
-      url = "git@" + repo.origin + ":" + repo.owner + "/" + repo.name + ".git"
-    else
-      url = addProtocol(repo.origin) + "/" + repo.owner + "/" + repo.name + ".git"
-
+    url = addProtocol(repo.origin, ssh) + repo.owner + "/" + repo.name + ".git"
   else
-    url = addProtocol(repo.origin) + "/" + repo.owner + "/" + repo.name + "/get/" + repo.checkout + ".zip"
+    url = addProtocol(repo.origin) + repo.owner + "/" + repo.name + "/get/" + repo.checkout + ".zip"
 
   return url
 }
