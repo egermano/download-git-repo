@@ -24,7 +24,7 @@ function download (repo, dest, opts, fn) {
   }
   opts = opts || {}
   var clone = opts.clone || false
-  var ssh = opts.ssh || true
+  var ssh = opts.ssh===undefined?true:opts.ssh;
 
   repo = normalize(repo)
   var url = getUrl(repo, clone, ssh)
