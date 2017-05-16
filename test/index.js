@@ -44,7 +44,7 @@ describe('download-git-repo', function () {
       })
     })
 
-    it('clones the master branch by default', function (done) {
+    it('clones the master branch by default and use ssh by default', function (done) {
       download('github:flipxfx/download-git-repo-fixture', 'test/tmp', { clone: true }, function (err) {
         if (err) return done(err)
         var actual = read('test/tmp', filter)
@@ -54,8 +54,29 @@ describe('download-git-repo', function () {
       })
     })
 
+    it('clones the master branch using https', function (done) {
+      download('github:flipxfx/download-git-repo-fixture', 'test/tmp', { clone: true, ssh: false }, function (err) {
+        if (err) return done(err)
+        var actual = read('test/tmp', filter)
+        var expected = read('test/fixtures/master')
+        assert.deepEqual(actual, expected)
+        done()
+      })
+    })
+    
+
     it('clones branches too', function (done) {
       download('github:flipxfx/download-git-repo-fixture#my-branch', 'test/tmp', { clone: true }, function (err) {
+        if (err) return done(err)
+        var actual = read('test/tmp', filter)
+        var expected = read('test/fixtures/my-branch')
+        assert.deepEqual(actual, expected)
+        done()
+      })
+    })
+
+    it('clones branches using https too', function (done) {
+      download('github:flipxfx/download-git-repo-fixture#my-branch', 'test/tmp', { clone: true, ssh: false }, function (err) {
         if (err) return done(err)
         var actual = read('test/tmp', filter)
         var expected = read('test/fixtures/my-branch')
@@ -106,8 +127,28 @@ describe('download-git-repo', function () {
       })
     })
 
+    it('clones the master branch using https', function (done) {
+      download('gitlab:flipxfx/download-git-repo-fixture', 'test/tmp', { clone: true, ssh: false }, function (err) {
+        if (err) return done(err)
+        var actual = read('test/tmp', filter)
+        var expected = read('test/fixtures/master')
+        assert.deepEqual(actual, expected)
+        done()
+      })
+    })
+
     it('clones branches too', function (done) {
       download('gitlab:flipxfx/download-git-repo-fixture#my-branch', 'test/tmp', { clone: true }, function (err) {
+        if (err) return done(err)
+        var actual = read('test/tmp', filter)
+        var expected = read('test/fixtures/my-branch')
+        assert.deepEqual(actual, expected)
+        done()
+      })
+    })
+
+    it('clones branches usgin https too', function (done) {
+      download('gitlab:flipxfx/download-git-repo-fixture#my-branch', 'test/tmp', { clone: true, ssh: false }, function (err) {
         if (err) return done(err)
         var actual = read('test/tmp', filter)
         var expected = read('test/fixtures/my-branch')
@@ -163,8 +204,28 @@ describe('download-git-repo', function () {
       })
     })
 
+    it('clones the master branch using https', function (done) {
+      download('bitbucket:flipxfx/download-git-repo-fixture', 'test/tmp', { clone: true, ssh: false }, function (err) {
+        if (err) return done(err)
+        var actual = read('test/tmp', filter)
+        var expected = read('test/fixtures/master')
+        assert.deepEqual(actual, expected)
+        done()
+      })
+    })
+
     it('clones branches too', function (done) {
       download('bitbucket:flipxfx/download-git-repo-fixture#my-branch', 'test/tmp', { clone: true }, function (err) {
+        if (err) return done(err)
+        var actual = read('test/tmp', filter)
+        var expected = read('test/fixtures/my-branch')
+        assert.deepEqual(actual, expected)
+        done()
+      })
+    })
+
+    it('clones branches using https too', function (done) {
+      download('bitbucket:flipxfx/download-git-repo-fixture#my-branch', 'test/tmp', { clone: true, ssh: false }, function (err) {
         if (err) return done(err)
         var actual = read('test/tmp', filter)
         var expected = read('test/fixtures/my-branch')
